@@ -13,6 +13,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let networkHandler = NetworkHandler()
+        networkHandler.getWikiData { (wiki) in
+            if let wiki = wiki {
+                print(wiki)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
