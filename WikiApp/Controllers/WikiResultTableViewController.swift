@@ -83,7 +83,9 @@ class WikiResultTableViewController: UITableViewController {
             guard let pages = wikiResults?.query?.pages else { return }
             if pages.indices.contains(indexPath.row) {
                 let pageResult = pages[indexPath.row]
+                guard let pageID = pageResult.pageid else { return }
                 controller.pageTitle = pageResult.title
+                controller.pageId = "\(pageID)"
             }
         }
     }
@@ -101,8 +103,8 @@ class WikiResultTableViewController: UITableViewController {
     }
     
     @IBAction func deleteCacheAction(_ sender: UIBarButtonItem) {
-       let alert = UIAlertController(title: Constants.alertTitle, message: Constants.alertMessageText, preferredStyle: .alert)
-       alert.addAction(UIAlertAction(title: Constants.cancelTitle, style: .default) { (action) in
+        let alert = UIAlertController(title: Constants.alertTitle, message: Constants.alertMessageText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.cancelTitle, style: .default) { (action) in
             self.dismiss(animated: true, completion: nil)
         })
         alert.addAction(UIAlertAction(title: Constants.okayTitle, style: .destructive) { (action) in

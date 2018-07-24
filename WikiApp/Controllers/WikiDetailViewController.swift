@@ -11,7 +11,6 @@ import WebKit
 
 class WikiDetailViewController: UIViewController {
     
-    
     @IBOutlet weak var webViewOutlet: UIView!
     var webView : WKWebView!
     @IBOutlet weak var progressViewOutlet: UIProgressView!
@@ -19,13 +18,14 @@ class WikiDetailViewController: UIViewController {
     @IBOutlet weak var nextButtonOutlet: UIButton!
     
     struct Constant {
-        static let defaultUrl = "https://en.wikipedia.org/wiki/"
+        static let defaultUrl = "https://en.wikipedia.org/wiki?curid="
         static let errorTitle = "Error"
         static let okayText = "Okay"
         static let estimatedProgress = "estimatedProgress"
         static let loading = "loading"
     }
     var pageTitle : String?
+    var pageId : String?
     
     fileprivate func setupView() {
         webView = WKWebView(frame: webViewOutlet.frame)
@@ -44,25 +44,15 @@ class WikiDetailViewController: UIViewController {
     }
     
     private func getCurrentUrl() -> URL? {
-        guard let pTitle = pageTitle else { return nil }
-        let urlStr = Constant.defaultUrl + pTitle
+        guard let pID = pageId else { return nil }
+        let urlStr = Constant.defaultUrl + pID
         guard let url = URL(string: urlStr) else { return nil }
         return url
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupView()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func reloadButtonAction(_ sender: UIButton) {
