@@ -17,6 +17,7 @@
 		0C311AB021066CAE00CE9C79 /* WikiResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C311AAF21066CAE00CE9C79 /* WikiResultTableViewCell.swift */; };
 		0C311ABB2107457B00CE9C79 /* WikiCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C311ABA2107457B00CE9C79 /* WikiCache.swift */; };
 		0C311ABD2107938D00CE9C79 /* WikiDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C311ABC2107938D00CE9C79 /* WikiDetailViewController.swift */; };
+		0CCAF2C32107B01C009FEE4C /* SearchSuggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CCAF2C22107B01C009FEE4C /* SearchSuggestions.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		0C311AAF21066CAE00CE9C79 /* WikiResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiResultTableViewCell.swift; sourceTree = "<group>"; };
 		0C311ABA2107457B00CE9C79 /* WikiCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiCache.swift; sourceTree = "<group>"; };
 		0C311ABC2107938D00CE9C79 /* WikiDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiDetailViewController.swift; sourceTree = "<group>"; };
+		0CCAF2C22107B01C009FEE4C /* SearchSuggestions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchSuggestions.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 		0C311A93210653B500CE9C79 /* WikiApp */ = {
 			isa = PBXGroup;
 			children = (
+				0CCAF2C12107AFF3009FEE4C /* Supporting Files */,
 				0C311AAE21066C9A00CE9C79 /* View */,
 				0C311AAB21066A8500CE9C79 /* Controllers */,
 				0C311AA6210659DE00CE9C79 /* Modals */,
@@ -101,6 +104,14 @@
 				0C311AAF21066CAE00CE9C79 /* WikiResultTableViewCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0CCAF2C12107AFF3009FEE4C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0CCAF2C22107B01C009FEE4C /* SearchSuggestions.json */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,6 +176,7 @@
 				0C311A9F210653B900CE9C79 /* LaunchScreen.storyboard in Resources */,
 				0C311A9C210653B900CE9C79 /* Assets.xcassets in Resources */,
 				0C311A9A210653B500CE9C79 /* Main.storyboard in Resources */,
+				0CCAF2C32107B01C009FEE4C /* SearchSuggestions.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

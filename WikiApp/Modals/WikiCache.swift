@@ -52,8 +52,6 @@ class WikiCache {
                     guard let data = try? Data(contentsOf: url) else { return }
                     withCompletionBlock(UIImage(data: data))
                     self.writeData(withData: data, withKey: key)
-                } catch let error {
-                    print("error on image fetch : ",error.localizedDescription)
                 }
             }
         }

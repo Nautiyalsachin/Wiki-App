@@ -18,6 +18,21 @@ class NetworkHandler {
     struct Constants {
         static let apiURL1 = "https://en.wikipedia.org//w/api.php?action=query&format=json&prop=pageimages%7Cpageterms&generator=prefixsearch&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=50&pilimit=10&wbptterms=description&gpssearch="
         static let apiUrl2 = "&gpslimit=10"
+        static let searchSuggestions = "SearchSuggestions"
+        static let jsonExtension = "json"
+    }
+    
+    func getSearchSuggestionData() -> Wiki? {
+        guard let filePath = Bundle.main.path(forResource: Constants.searchSuggestions, ofType: Constants.jsonExtension) else { return nil }
+        let fileUrl = URL(fileURLWithPath: filePath)
+        do {
+            let content = try Data(contentsOf: fileUrl)
+            let wikiData = try JSONDecoder().decode(Wiki.self, from: content)
+            return wikiData
+        } catch let error {
+            print("parse error: \(error.localizedDescription)")
+        }
+        return nil
     }
     
     func getWikiData(fromKey key: String, withCompletionBlock : @escaping wikiMediaCompletionHandler) {

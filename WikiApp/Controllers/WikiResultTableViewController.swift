@@ -12,35 +12,46 @@ class WikiResultTableViewController: UITableViewController {
     
     var wikiResults : Wiki?
     let searchController = UISearchController(searchResultsController: nil)
+    let networkHandler = NetworkHandler()
     
     struct  Constants {
         static let cellidentifier = "WikiResultTableViewCell"
         static let title = "Wiki Search"
+        static let searchText = "Wiki Search, enter 3 or more char"
         static let alertTitle = "Alert!"
         static let alertMessageText = "This will delete all the cache data, including cached photos"
         static let cancelTitle = "Cancel"
         static let okayTitle = "Okay"
         
-        static let segueIdentifier = "webViewSegue"
+        static let segueIdentifier = "webViewSegue"        
+    }
+    
+    fileprivate func intialSetup() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = Constants.searchText
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.isActive = true
+        definesPresentationContext = true
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
+        self.title = Constants.title
+        if let results = networkHandler.getSearchSuggestionData() {
+            self.wikiResults = results
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = Constants.title
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        searchController.searchBar.delegate = self
-        self.title = Constants.title
+        intialSetup()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     private func getWikiResults(withSearchKey key : String) {
-        let networkHandler = NetworkHandler()
         networkHandler.getWikiData(fromKey: key) { (wiki) in
             if let wiki = wiki {
                 self.wikiResults = wiki
@@ -92,6 +103,10 @@ class WikiResultTableViewController: UITableViewController {
     
     func filterContentForSearchText(_ searchText: String) { //FIXME : API call will be added here
         if searchBarIsEmpty() {
+            self.wikiResults = nil
+            if let results = networkHandler.getSearchSuggestionData() {
+                self.wikiResults = results
+            }
             tableView.reloadData()
         } else {
             self.getWikiResults(withSearchKey: searchText)
@@ -125,7 +140,6 @@ extension WikiResultTableViewController: UISearchResultsUpdating {
         let searchBar = searchController.searchBar
         if let text = searchBar.text {
             filterContentForSearchText(text)
-            print("text key : ",text)
         }
     }
 }
