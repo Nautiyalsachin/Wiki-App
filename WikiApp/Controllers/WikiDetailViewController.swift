@@ -28,6 +28,7 @@ class WikiDetailViewController: UIViewController {
     var pageId : String?
     
     fileprivate func setupView() {
+        self.title = pageTitle
         webView = WKWebView(frame: webViewOutlet.frame)
         webViewOutlet.addSubview(webView)
         webView.navigationDelegate = self
