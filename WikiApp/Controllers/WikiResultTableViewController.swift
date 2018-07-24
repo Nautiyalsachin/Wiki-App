@@ -9,13 +9,19 @@
 import UIKit
 
 class WikiResultTableViewController: UITableViewController {
-
+    
     var wikiResults : Wiki?
     let searchController = UISearchController(searchResultsController: nil)
     
     struct  Constants {
         static let cellidentifier = "WikiResultTableViewCell"
         static let title = "Wiki Search"
+        static let alertTitle = "Alert!"
+        static let alertMessageText = "This will delete all the cache data, including cached photos"
+        static let cancelTitle = "Cancel"
+        static let okayTitle = "Okay"
+        
+        static let segueIdentifier = "webViewSegue"
     }
     
     override func viewDidLoad() {
@@ -31,56 +37,79 @@ class WikiResultTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.getWikiResults()
     }
     
-    private func getWikiResults() {
+    private func getWikiResults(withSearchKey key : String) {
         let networkHandler = NetworkHandler()
-        networkHandler.getWikiData { (wiki) in
+        networkHandler.getWikiData(fromKey: key) { (wiki) in
             if let wiki = wiki {
                 self.wikiResults = wiki
                 DispatchQueue.main.async {
-                self.tableView.reloadData()
+                    self.tableView.reloadData()
                 }
             }
         }
     }
-
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let wikiResults = wikiResults else { return 0 }
         guard let pages = wikiResults.query?.pages else { return 0 }
         return pages.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellidentifier, for: indexPath) as? WikiResultTableViewCell {
             guard let pages = wikiResults?.query?.pages else { return UITableViewCell() }
-            cell.pageResult = pages[indexPath.row]
-            return cell
+            if pages.indices.contains(indexPath.row) {
+                cell.pageResult = pages[indexPath.row]
+                return cell
+            }
         }
         return UITableViewCell()
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.performSegue(withIdentifier: Constants.segueIdentifier, sender: indexPath)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.segueIdentifier, let controller = segue.destination as? WikiDetailViewController, let indexPath = sender as? IndexPath {
+            guard let pages = wikiResults?.query?.pages else { return }
+            if pages.indices.contains(indexPath.row) {
+                let pageResult = pages[indexPath.row]
+                controller.pageTitle = pageResult.title
+            }
+        }
+    }
+    
     func filterContentForSearchText(_ searchText: String) { //FIXME : API call will be added here
-//        filteredCandies = candies.filter({( ) -> Bool in
-//            let doesCategoryMatch = (scope == "All") || (candy.category == scope)
-//
-//            if searchBarIsEmpty() {
-//                return doesCategoryMatch
-//            } else {
-//                return doesCategoryMatch && candy.name.lowercased().contains(searchText.lowercased())
-//            }
-//        })
-//        tableView.reloadData()
+        if searchBarIsEmpty() {
+            tableView.reloadData()
+        } else {
+            self.getWikiResults(withSearchKey: searchText)
+        }
     }
     
     func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    @IBAction func deleteCacheAction(_ sender: UIBarButtonItem) {
+       let alert = UIAlertController(title: Constants.alertTitle, message: Constants.alertMessageText, preferredStyle: .alert)
+       alert.addAction(UIAlertAction(title: Constants.cancelTitle, style: .default) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(UIAlertAction(title: Constants.okayTitle, style: .destructive) { (action) in
+            WikiCache.shared.clearData()
+            self.dismiss(animated: true, completion: nil)
+        })
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
