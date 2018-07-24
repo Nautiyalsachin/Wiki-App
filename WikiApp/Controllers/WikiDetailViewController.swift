@@ -32,17 +32,22 @@ class WikiDetailViewController: UIViewController {
         webViewOutlet.addSubview(webView)
         webView.navigationDelegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0)
-        let width = NSLayoutConstraint(item: webView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1, constant: 0)
+        let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal, toItem: webViewOutlet, attribute: .height, multiplier: 1, constant: 0)
+        let width = NSLayoutConstraint(item: webView, attribute: .width, relatedBy: .equal, toItem: webViewOutlet, attribute: .width, multiplier: 1, constant: 0)
         view.addConstraints([height, width])
-        if let pTitle = pageTitle {
-            self.title = pTitle
-            let urlStr = Constant.defaultUrl + pTitle
-            if let url = URL(string: urlStr) {
-                let request = URLRequest(url: url)
-                webView.load(request)
-            }
+        webView.addObserver(self, forKeyPath: Constant.loading, options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: Constant.estimatedProgress, options: .new, context: nil)
+        if let url = self.getCurrentUrl() {
+            let request = URLRequest(url: url)
+            webView.load(request)
         }
+    }
+    
+    private func getCurrentUrl() -> URL? {
+        guard let pTitle = pageTitle else { return nil }
+        let urlStr = Constant.defaultUrl + pTitle
+        guard let url = URL(string: urlStr) else { return nil }
+        return url
     }
     
     override func viewDidLoad() {
@@ -65,7 +70,9 @@ class WikiDetailViewController: UIViewController {
     }
     
     @IBAction func safariButtonAction(_ sender: UIButton) {
-        
+        if let url = self.getCurrentUrl() {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     
     @IBAction func backButtonAction(_ sender: UIButton) {
@@ -75,7 +82,6 @@ class WikiDetailViewController: UIViewController {
     @IBAction func nextButtonAction(_ sender: UIButton) {
         self.webView.goForward()
     }
-    
 }
 
 

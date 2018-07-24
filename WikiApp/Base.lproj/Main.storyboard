@@ -107,18 +107,18 @@
             <objects>
                 <viewController storyboardIdentifier="WikiDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Cy9-jG-DS0" customClass="WikiDetailViewController" customModule="WikiApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UBY-E8-T1g">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P3H-Lz-86t">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9OG-eA-J2r">
-                                <rect key="frame" x="0.0" y="64" width="375" height="2"/>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9OG-eA-J2r">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
                             </progressView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6C9-jn-4Vh">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="559" width="375" height="44"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S5R-Lv-puz">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -192,6 +192,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qvG-zt-NIw"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="MO8-Ak-6yf"/>
                     <connections>
                         <outlet property="backButtonOutlet" destination="d8I-yc-U2u" id="p3o-ys-Qj6"/>
